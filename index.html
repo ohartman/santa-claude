@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Get your personalized Christmas psychic reading from Santa Claude! Find out if you're naughty or nice.">
     <title>🎅 Santa Claude 🔮</title>
     <style>
         * {
@@ -87,11 +88,22 @@
             border-radius: 8px;
             font-size: 1em;
             transition: border-color 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: white;
+        }
+
+        select {
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L6 6L11 1" stroke="%23165b33" stroke-width="2" stroke-linecap="round"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #c41e3a;
+            box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
         }
 
         .btn {
@@ -106,9 +118,11 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             margin-top: 10px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .btn:hover {
+        .btn:hover, .btn:active {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(196, 30, 58, 0.4);
         }
@@ -189,8 +203,13 @@
 
         .reading-section p {
             color: #333;
-            line-height: 1.6;
+            line-height: 1.7;
             font-size: 1.05em;
+        }
+
+        small {
+            display: block;
+            line-height: 1.4;
         }
 
         .gift-box {
@@ -222,17 +241,108 @@
             box-shadow: 0 10px 20px rgba(22, 91, 51, 0.4);
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
             .container {
-                padding: 25px;
+                padding: 20px;
+                border-radius: 15px;
+                max-width: 100%;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 1.8em;
+                margin-bottom: 8px;
             }
 
             .subtitle {
+                font-size: 0.95em;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            label {
                 font-size: 1em;
+                margin-bottom: 6px;
+            }
+
+            input, select {
+                padding: 14px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+
+            .btn {
+                padding: 16px;
+                font-size: 1.1em;
+                border-radius: 12px;
+            }
+
+            .verdict {
+                font-size: 1.6em;
+                padding: 15px;
+            }
+
+            .reading-section {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .reading-section h3 {
+                font-size: 1.15em;
+                margin-bottom: 12px;
+            }
+
+            .reading-section p {
+                font-size: 1em;
+                line-height: 1.5;
+            }
+
+            .gift-box {
+                padding: 15px;
+            }
+
+            .gift-box h3 {
+                font-size: 1.1em;
+            }
+
+            .gift-box p {
+                font-size: 1.05em;
+            }
+
+            .snowflake {
+                font-size: 0.8em;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .subtitle {
+                font-size: 0.9em;
+            }
+
+            input, select {
+                padding: 12px;
+            }
+
+            .btn {
+                padding: 14px;
+                font-size: 1em;
+            }
+
+            .verdict {
+                font-size: 1.4em;
             }
         }
     </style>
@@ -274,7 +384,7 @@
                         <option value="energy-drink">Energy Drinks (concerning caffeine levels)</option>
                         <option value="tea">Tea (secretly judging everyone)</option>
                         <option value="water">Water (lying, nobody picks this)</option>
-                        <option value="soda">Soda (永遠 12 years old)</option>
+                        <option value="soda">Soda (forever 12 years old)</option>
                         <option value="smoothie">Green Smoothie (trying too hard to be healthy)</option>
                     </select>
                 </div>
