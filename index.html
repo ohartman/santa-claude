@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎅 Santa Claude 🔮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #c41e3a;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #165b33;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #2c5364;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #165b33;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #c41e3a;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #c41e3a 0%, #d32f2f 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(196, 30, 58, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid rgba(196, 30, 58, 0.1);
+            border-top: 4px solid #c41e3a;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .verdict {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .verdict.nice {
+            background: linear-gradient(135deg, #165b33 0%, #2d8659 100%);
+            color: white;
+        }
+
+        .verdict.naughty {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            color: white;
+        }
+
+        .reading-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c41e3a;
+        }
+
+        .reading-section h3 {
+            color: #165b33;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .reading-section p {
+            color: #333;
+            line-height: 1.6;
+            font-size: 1.05em;
+        }
+
+        .gift-box {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .gift-box h3 {
+            color: #c41e3a;
+            margin-bottom: 10px;
+        }
+
+        .gift-box p {
+            color: #2c5364;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #165b33 0%, #2d8659 100%);
+            margin-top: 15px;
+        }
+
+        .back-btn:hover {
+            box-shadow: 0 10px 20px rgba(22, 91, 51, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎅 Santa Claude 🔮</h1>
+            <p class="subtitle">Discover if you're naughty or nice this year!</p>
+        </div>
+
+        <div id="form-section">
+            <form id="psychic-form">
+                <div class="form-group">
+                    <label for="zodiac">🌟 Your Zodiac Sign</label>
+                    <select id="zodiac" required>
+                        <option value="">Select your sign...</option>
+                        <option value="aries">Aries</option>
+                        <option value="taurus">Taurus</option>
+                        <option value="gemini">Gemini</option>
+                        <option value="cancer">Cancer</option>
+                        <option value="leo">Leo</option>
+                        <option value="virgo">Virgo</option>
+                        <option value="libra">Libra</option>
+                        <option value="scorpio">Scorpio</option>
+                        <option value="sagittarius">Sagittarius</option>
+                        <option value="capricorn">Capricorn</option>
+                        <option value="aquarius">Aquarius</option>
+                        <option value="pisces">Pisces</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="drink">☕ Your Go-To Drink Order</label>
+                    <select id="drink" required>
+                        <option value="">Select your poison...</option>
+                        <option value="black-coffee">Black Coffee (psychopath energy)</option>
+                        <option value="fancy-coffee">Complicated Starbucks Order (high maintenance)</option>
+                        <option value="energy-drink">Energy Drinks (concerning caffeine levels)</option>
+                        <option value="tea">Tea (secretly judging everyone)</option>
+                        <option value="water">Water (lying, nobody picks this)</option>
+                        <option value="soda">Soda (永遠 12 years old)</option>
+                        <option value="smoothie">Green Smoothie (trying too hard to be healthy)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="generation">👥 Your Generation</label>
+                    <select id="generation" required>
+                        <option value="">Select your generation...</option>
+                        <option value="gen-z">Gen Z (1997-2012)</option>
+                        <option value="millennial">Millennial (1981-1996)</option>
+                        <option value="gen-x">Gen X (1965-1980)</option>
+                        <option value="boomer">Baby Boomer (1946-1964)</option>
+                        <option value="silent">Silent Generation (1928-1945)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="song">🎵 Favorite Christmas Song</label>
+                    <select id="song" required>
+                        <option value="">Select your favorite...</option>
+                        <option value="jingle-bells">Jingle Bells</option>
+                        <option value="silent-night">Silent Night</option>
+                        <option value="white-christmas">White Christmas</option>
+                        <option value="all-i-want">All I Want for Christmas Is You</option>
+                        <option value="rockin-around">Rockin' Around the Christmas Tree</option>
+                        <option value="last-christmas">Last Christmas</option>
+                        <option value="santa-baby">Santa Baby</option>
+                        <option value="let-it-snow">Let It Snow</option>
+                        <option value="rudolph">Rudolph the Red-Nosed Reindeer</option>
+                        <option value="deck-the-halls">Deck the Halls</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="comedy">🎬 Favorite Comedy Movie</label>
+                    <select id="comedy" required>
+                        <option value="">Pick your humor style...</option>
+                        <option value="superbad">Superbad (peak bro humor)</option>
+                        <option value="mean-girls">Mean Girls (iconic and you quote it daily)</option>
+                        <option value="office-space">Office Space (dead inside corporate humor)</option>
+                        <option value="anchorman">Anchorman (random = funny apparently)</option>
+                        <option value="bridesmaids">Bridesmaids (chaos energy)</option>
+                        <option value="stepbrothers">Step Brothers (manchild vibes)</option>
+                        <option value="hangover">The Hangover (questionable life choices)</option>
+                        <option value="napoleon">Napoleon Dynamite (weird kid energy)</option>
+                        <option value="groundhog">Groundhog Day (pretentious but valid)</option>
+                        <option value="dumb-dumber">Dumb and Dumber (no thoughts, just vibes)</option>
+                        <option value="princess-bride">The Princess Bride (you're better than us)</option>
+                        <option value="hot-fuzz">Hot Fuzz (comedy connoisseur alert)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">✨ Reveal My Reading ✨</button>
+            </form>
+        </div>
+
+        <div id="loading-section" class="loading">
+            <div class="spinner"></div>
+            <p>The spirits are consulting... 🔮</p>
+        </div>
+
+        <div id="result-section" class="result">
+            <!-- Results will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Create snowflakes
+        function createSnowflakes() {
+            const snowflakeCount = 30;
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                document.body.appendChild(snowflake);
+            }
+        }
+
+        createSnowflakes();
+
+        // Reading database
+        const readingData = {
+            zodiacTraits: {
+                aries: { trait: 'charging into situations like a caffeinated ram', tendency: 'starting 47 projects and finishing 2' },
+                taurus: { trait: 'being as moveable as a couch during a Netflix binge', tendency: 'treating "I\'ll think about it" as a lifestyle choice' },
+                gemini: { trait: 'having more personalities than a DND character sheet', tendency: 'changing your mind faster than TikTok trends' },
+                cancer: { trait: 'feeling feelings about your feelings', tendency: 'taking everything personally, including horoscopes' },
+                leo: { trait: 'making every group chat about you somehow', tendency: 'expecting a standing ovation for doing the dishes' },
+                virgo: { trait: 'color-coding your color-coded notes', tendency: 'alphabetizing your spice rack at 2am' },
+                libra: { trait: 'spending 45 minutes deciding where to eat', tendency: 'saying "I don\'t mind" when you absolutely do mind' },
+                scorpio: { trait: 'knowing everyone\'s secrets but pretending you don\'t', tendency: 'holding grudges from 2007' },
+                sagittarius: { trait: 'treating life like it\'s one big improv show', tendency: 'saying "YOLO" unironically in 2024' },
+                capricorn: { trait: 'having a 10-year plan for your 10-year plan', tendency: 'relaxing by making spreadsheets' },
+                aquarius: { trait: 'being quirky before it was cool (and after)', tendency: 'explaining why you\'re "not like other people"' },
+                pisces: { trait: 'living in a fantasy world with better Wi-Fi', tendency: 'crying at commercials, memes, and mild inconveniences' }
+            },
+            
+            songVibes: {
+                'jingle-bells': 'basic but in the best way',
+                'silent-night': 'the friend who says "can we turn this down?" at parties',
+                'white-christmas': 'nostalgic to the point of concerning',
+                'all-i-want': 'Mariah Carey enthusiast (red flag)',
+                'rockin-around': 'definitely the karaoke microphone hogger',
+                'last-christmas': 'emotionally unavailable but make it festive',
+                'santa-baby': 'flirty in a way that makes HR nervous',
+                'let-it-snow': 'would literally die in actual snow',
+                'rudolph': 'underdog supporter (participation trophy energy)',
+                'deck-the-halls': 'starts decorating in October, no one can stop you'
+            },
+
+            drinkPersonality: {
+                'black-coffee': { vibe: 'no-nonsense', trait: 'running on pure spite and caffeine', judgment: 'your taste buds have given up' },
+                'fancy-coffee': { vibe: 'high-maintenance', trait: 'making baristas question their life choices', judgment: 'spending $8 on milk with a shot of coffee' },
+                'energy-drink': { vibe: 'chaotic neutral', trait: 'one heart palpitation away from a problem', judgment: 'your dentist is crying' },
+                'tea': { vibe: 'quietly superior', trait: 'silently judging everyone\'s choices', judgment: 'convinced you\'re better than coffee people' },
+                'water': { vibe: 'lying to yourself', trait: 'pretending to be hydrated', judgment: 'we all know you actually drink something else' },
+                'soda': { vibe: 'eternal child', trait: 'refusing to grow up', judgment: 'your pancreas is sending SOS signals' },
+                'smoothie': { vibe: 'wellness influencer wannabe', trait: 'posting green drinks on Instagram', judgment: 'it tastes like grass and you know it' }
+            },
+
+            comedyPersonality: {
+                'superbad': { humor: 'bro comedy enthusiast', red_flag: 'peaked in high school energy', judgment: 'you probably own a "BEER PONG CHAMPION" shirt' },
+                'mean-girls': { humor: 'quoter of iconic lines', red_flag: 'brings up fetch weekly', judgment: 'your personality is 40% movie quotes' },
+                'office-space': { humor: 'dead inside corporate worker', red_flag: 'too relatable to be healthy', judgment: 'you hate your job and everyone knows it' },
+                'anchorman': { humor: 'random humor devotee', red_flag: 'thinks yelling is peak comedy', judgment: 'you say "60% of the time, it works every time" unironically' },
+                'bridesmaids': { humor: 'chaos appreciator', red_flag: 'relates too much to the breakdown scenes', judgment: 'your life is the plane scene on a regular Tuesday' },
+                'stepbrothers': { humor: 'manchild sympathizer', red_flag: 'quotes this at inappropriate times', judgment: 'your maturity level is concerning' },
+                'hangover': { humor: 'questionable decision maker', red_flag: 'thinks Vegas solves problems', judgment: 'your group chat has "what happened last night" weekly' },
+                'napoleon': { humor: 'weird kid forever', red_flag: 'aggressively quirky', judgment: 'you were homeschooled or should have been' },
+                'groundhog': { humor: 'pretentious but earned', red_flag: 'uses "existential" in casual conversation', judgment: 'you think you\'re deep (you might be right though)' },
+                'dumb-dumber': { humor: 'no thoughts just laughs', red_flag: 'slapstick is peak entertainment', judgment: 'your comedy taste is stuck in 1994' },
+                'princess-bride': { humor: 'cultured superiority complex', red_flag: 'corrects people about "true love"', judgment: 'you say "inconceivable" and think you\'re clever' },
+                'hot-fuzz': { humor: 'comedy connoisseur', red_flag: 'Edgar Wright fanboy/girl', judgment: 'you judge people who haven\'t seen the Cornetto trilogy' }
+            },
+
+            niceExplanations: [
+                'Your {trait} as a {zodiac} has been surprisingly wholesome this year. Sure, you\'re guilty of {tendency}, but the spirits have reviewed your browser history and you\'re... mostly good? Your "{song}" choice screams "{songVibe}", you\'re {drinkTrait}, and as a {comedyHumor}, {comedyJudgment}. Somehow this chaos adds up to nice.',
+                'The cosmic audit shows you as a {zodiac} have been using your {trait} for good instead of chaos. Despite {tendency}, you managed not to ruin anyone\'s year. As a "{songVibe}" who picked "{song}", combined with {drinkTrait} and being a {comedyHumor}, you\'re the friend people actually want around. {comedyRedFlag} is concerning though.',
+                'Listen, your {trait} as a {zodiac} could be annoying, but somehow you made it charming this year. Yes, you spend way too much time {tendency}, but the universe has decided to overlook it. Your "{song}" preference, the fact that {drinkJudgment}, and your choice of comedy movie revealing {comedyJudgment}... it all somehow works.',
+                'The stars are honestly shocked a {zodiac} managed to be nice with all that {trait} energy. Between {tendency}, {drinkTrait}, and being a {comedyHumor}, most people would\'ve ended up on the naughty list. But you? You pulled it off despite {comedyRedFlag}.'
+            ],
+
+            naughtyExplanations: [
+                'Your {trait} as a {zodiac} has been... a lot this year. The spirits have witnessed you {tendency} without shame. Your "{song}" selection reveals you\'re a "{songVibe}", {drinkTrait}, and as a {comedyHumor}, {comedyJudgment}. The universe is judging (especially since {comedyRedFlag}), but like, we\'re entertained.',
+                'As a {zodiac}, your {trait} crossed the line from "quirky" to "concerning" this year. Between {tendency}, {drinkTrait}, and being a {comedyHumor}, you\'ve given the cosmos plenty of material. Picking "{song}" and the fact that {comedyJudgment} just confirms you\'re self-aware enough to be dangerous.',
+                'The celestial beings need to have a word about your {trait} as a {zodiac}. You spent this year {tendency} like it was an Olympic sport while {drinkTrait}. Your "{song}" choice plus {comedyRedFlag} means {comedyJudgment}, and the naughty list has VIP seating with your name on it.',
+                'Your {zodiac} energy meant you were {trait} all year when you should\'ve been behaving. The spirits caught you {tendency} constantly. Being a {comedyHumor} while {drinkTrait} isn\'t helping your case. Also, {comedyRedFlag} explains everything about you.'
+            ],
+
+            gifts: {
+                'gen-z': {
+                    nice: [
+                        'AirPods Max (because regular AirPods are so 2021)',
+                        'that $400 digital camera for the "vintage aesthetic"',
+                        'Stanley cup in a limited edition color (you have 12 already)',
+                        'Depop credit (to buy clothes your parents donated)',
+                        'therapy sessions (finally, your emotional support TikToks weren\'t enough)',
+                        'Genshin Impact gacha pulls (your wallet is crying)',
+                        'custom Vans with anime characters (unironically sick)',
+                        'Discord Nitro annual subscription (your online friends > IRL friends)'
+                    ],
+                    naughty: [
+                        'a landline phone (punishment for screen addiction)',
+                        'book called "How to Have a Real Conversation"',
+                        'job application to any place hiring (please)',
+                        'alarm clock that you can\'t snooze 47 times',
+                        'social skills workshop voucher',
+                        'a savings account with $5 in it (start somewhere)',
+                        'prescription for touching grass',
+                        'LinkedIn Premium and a firm talking-to about your future'
+                    ]
+                },
+                'millennial': {
+                    nice: [
+                        'Peloton membership (you\'ll use it twice then feel guilty)',
+                        'that $300 succulent you\'ll definitely keep alive this time',
+                        'Instant Pot (it\'s been on your list for 4 years)',
+                        'craft brewery tour (your personality trait)',
+                        'mechanical keyboard (your coworkers will hate you)',
+                        'Marie Kondo\'s entire book series (you won\'t read it)',
+                        'Trader Joe\'s gift card (your natural habitat)',
+                        'weighted blanket for your anxiety (doesn\'t fix the root cause)'
+                    ],
+                    naughty: [
+                        'appointment reminder for that doctor visit from 2019',
+                        'Excel spreadsheet of all your abandoned hobbies',
+                        'one (1) avocado with note "save for retirement instead"',
+                        'book: "It\'s Not Too Late to Adult"',
+                        'LinkedIn endorsement for "complaining about being tired"',
+                        'bill for your student loans (ouch)',
+                        'Costco membership and admission you\'re officially old',
+                        'compression socks and the realization your back hurts now'
+                    ]
+                },
+                'gen-x': {
+                    nice: [
+                        'tickets to that band from your youth (they\'re on reunion tour #4)',
+                        'really expensive grill with 47 features you\'ll never use',
+                        'vinyl record of an album you already own digitally',
+                        'leather jacket that costs more than your first car',
+                        'woodworking tools (your garage kingdom grows)',
+                        'vintage concert t-shirt that fits your vibe perfectly',
+                        'noise-cancelling headphones (to ignore everyone)',
+                        'artisanal whiskey that costs more than reasonable'
+                    ],
+                    naughty: [
+                        'reading glasses on a chain (accept your fate)',
+                        'book: "Why Your Kids Don\'t Call Enough"',
+                        'USB drive labeled "PHOTOS TO FINALLY ORGANIZE"',
+                        'DVD rewinder (oh wait, that\'s not a thing anymore)',
+                        'appointment for that physical you\'ve been avoiding',
+                        'prescription bottles organizer (Monday-Sunday)',
+                        'manual for "How to Stop Forwarding Facebook Memes"',
+                        'your kid explaining TikTok to you for the 8th time'
+                    ]
+                },
+                'boomer': {
+                    nice: [
+                        'cruise to somewhere you can complain about the food',
+                        'subscription to newspaper you\'ll cite in arguments',
+                        'comfortable chair with lumbar support (finally)',
+                        'bird watching guide and binoculars (peak activity)',
+                        'golf club membership (it\'s what you deserve)',
+                        'garden gnome collection expansion pack',
+                        'TV Guide subscription (yes, it still exists)',
+                        'one of those grabber sticks for reaching things'
+                    ],
+                    naughty: [
+                        'tutorial on "How to Stop Typing in All Caps"',
+                        'explanation that Facebook is not "the internet"',
+                        'book: "Your Opinions Are Not Facts"',
+                        'class on not forwarding chain emails',
+                        'prescription for yelling less at technology',
+                        'appointment to learn what a meme actually is',
+                        'intervention about your Facebook comment section habits',
+                        'gentle reminder that "OK Boomer" was about you'
+                    ]
+                },
+                'silent': {
+                    nice: [
+                        'luxurious heated blanket (warmth is key)',
+                        'large-print crossword puzzle book (daily entertainment)',
+                        'comfortable slippers that don\'t slip (safety first)',
+                        'classic novel collection in readable font size',
+                        'bird feeder for your window watching hobby',
+                        'premium tea sampler (proper beverages)',
+                        'photo album to organize those boxes of pictures',
+                        'cozy armchair that doesn\'t hurt to sit in'
+                    ],
+                    naughty: [
+                        'iPad with video call tutorial (please learn)',
+                        'explanation that voicemail still works',
+                        'book: "Technology Is Not Scary"',
+                        'reminder to charge your phone occasionally',
+                        'classes on texting beyond "OK" and "LOL"',
+                        'intervention about hoarding newspapers from 1987',
+                        'gentle suggestion to embrace one (1) modern convenience',
+                        'family photo printed and framed (you can see it)'
+                    ]
+                }
+            },
+
+            fortunes: {
+                nice: [
+                    'The universe predicts you\'ll finally get your life together in 2025. Just kidding, but you\'ll definitely order less DoorDash. An old friend will reach out, probably to ask if you have a ladder they can borrow. Your next purchase will be regretted within 48 hours but you\'ll keep it anyway.',
+                    'The stars indicate someone will compliment your outfit and you\'ll think about it for three weeks. You\'ll make a New Year\'s resolution that lasts until January 4th. A minor inconvenience will teach you patience (spoiler: you won\'t learn). Your found family will continue tolerating you.',
+                    'Your good karma points are stacking up like unread emails. Expect a surprise text from someone you forgot you knew. You\'ll discover a new hobby that costs way more than anticipated. The cosmos suggests actually using that gym membership this time.',
+                    'January brings a fresh start you\'ll abandon by February. Someone will tell you "you look different" and you\'ll spiral trying to figure out if that\'s good. A financial windfall is coming (it\'s $20 from your birthday). The universe says drink more water, seriously.'
+                ],
+                naughty: [
+                    'The spirits suggest getting your act together, but honestly, where\'s the fun in that? You\'ll make the same mistakes next year with more confidence. Someone will call you out and they\'ll be right, but you\'ll argue anyway. 2025 is your year to maybe possibly consider personal growth.',
+                    'Your chaotic energy will continue attracting other disasters (birds of a feather). The universe recommends therapy but knows you\'ll just vent to your friends instead. You\'ll delete and redownload the same app 7 times. Consider apologizing to at least one person, it\'ll shock them.',
+                    'The cosmos has seen your browser history and you need to log off. Your next bad decision is already planned and frankly, we\'re excited to see it. Someone will say "I told you so" and they\'ll be insufferable about it. Maybe try listening to advice for once?',
+                    'Plot twist: your naughty era is actually kinda iconic. The spirits say you\'ll learn from your mistakes (citation needed). A reality check is coming and it won\'t be gentle. Your found family will continue supporting your nonsense because they\'re legally obligated at this point.'
+                ]
+            }
+        };
+
+        document.getElementById('psychic-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                zodiac: document.getElementById('zodiac').value,
+                drink: document.getElementById('drink').value,
+                generation: document.getElementById('generation').value,
+                song: document.getElementById('song').value,
+                comedy: document.getElementById('comedy').value
+            };
+
+            // Hide form, show loading
+            document.getElementById('form-section').style.display = 'none';
+            document.getElementById('loading-section').style.display = 'block';
+
+            // Simulate mystical calculation time
+            setTimeout(() => {
+                const reading = generateReading(formData);
+                displayReading(reading);
+            }, 2000);
+        });
+
+        function generateReading(data) {
+            // Create a semi-random seed from inputs
+            const seed = data.drink.length + data.zodiac.length + data.generation.length + data.song.length + data.comedy.length;
+            
+            // Determine Nice or Naughty (weighted toward Nice)
+            const niceScore = (seed % 10) + (data.drink.length % 7);
+            const verdict = niceScore > 6 ? 'NICE' : 'NAUGHTY';
+            
+            // Get all personality data
+            const zodiac = readingData.zodiacTraits[data.zodiac];
+            const songVibe = readingData.songVibes[data.song];
+            const drinkPerson = readingData.drinkPersonality[data.drink];
+            const comedyPerson = readingData.comedyPersonality[data.comedy];
+            const songName = document.getElementById('song').options[document.getElementById('song').selectedIndex].text;
+            const zodiacName = data.zodiac.charAt(0).toUpperCase() + data.zodiac.slice(1);
+            
+            // Generate explanation with template replacement
+            const explanations = verdict === 'NICE' ? readingData.niceExplanations : readingData.naughtyExplanations;
+            let explanation = explanations[seed % explanations.length];
+            
+            explanation = explanation
+                .replace('{trait}', zodiac.trait)
+                .replace('{zodiac}', zodiacName)
+                .replace('{tendency}', zodiac.tendency)
+                .replace('{song}', songName)
+                .replace('{songVibe}', songVibe)
+                .replace('{vibe}', songVibe)
+                .replace('{drinkTrait}', drinkPerson.trait)
+                .replace('{drinkJudgment}', drinkPerson.judgment)
+                .replace('{drinkVibe}', drinkPerson.vibe)
+                .replace('{comedyHumor}', comedyPerson.humor)
+                .replace('{comedyRedFlag}', comedyPerson.red_flag)
+                .replace('{comedyJudgment}', comedyPerson.judgment);
+            
+            // Select gift based on generation
+            const giftList = readingData.gifts[data.generation];
+            const gifts = verdict === 'NICE' ? giftList.nice : giftList.naughty;
+            const gift = gifts[seed % gifts.length];
+            
+            // Select fortune
+            const fortunes = readingData.fortunes[verdict.toLowerCase()];
+            const fortune = fortunes[seed % fortunes.length];
+            
+            return {
+                verdict,
+                explanation,
+                gift,
+                fortune
+            };
+        }
+
+        function displayReading(reading) {
+            const resultSection = document.getElementById('result-section');
+            const verdictClass = reading.verdict.toLowerCase();
+            
+            resultSection.innerHTML = `
+                <div class="verdict ${verdictClass}">
+                    ${reading.verdict === 'NICE' ? '🎅' : '😈'} ${reading.verdict.toUpperCase()} ${reading.verdict === 'NICE' ? '🎅' : '😈'}
+                </div>
+
+                <div class="reading-section">
+                    <h3>🔮 The Spirits Have Spoken</h3>
+                    <p>${reading.explanation}</p>
+                </div>
+
+                <div class="gift-box">
+                    <h3>🎁 Your Christmas Gift Awaits</h3>
+                    <p>${reading.gift}</p>
+                </div>
+
+                <div class="reading-section">
+                    <h3>✨ Your Christmas Fortune</h3>
+                    <p>${reading.fortune}</p>
+                </div>
+
+                <button class="btn back-btn" onclick="resetForm()">🔄 Get Another Reading</button>
+            `;
+
+            document.getElementById('loading-section').style.display = 'none';
+            resultSection.style.display = 'block';
+        }
+
+        function resetForm() {
+            document.getElementById('psychic-form').reset();
+            document.getElementById('result-section').style.display = 'none';
+            document.getElementById('form-section').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
