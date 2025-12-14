@@ -525,16 +525,16 @@
             },
 
             niceExplanations: [
-                'Your {trait} as a {zodiac} has been surprisingly wholesome this year. Sure, you\'re guilty of {tendency}, but the spirits have reviewed your browser history and... you\'re mostly okay. Your "{song}" choice screams "{songVibe}," you\'re {drinkTrait}, and as a {comedyHumor}, {comedyJudgment}. Somehow, this chaos adds up to nice.',
-                'The cosmic audit reveals that you, a {zodiac}, have been using your {trait} for good instead of chaos. Despite {tendency}, you managed not to ruin anyone\'s year. As "{songVibe}" who picked "{song}," combined with {drinkTrait} and being a {comedyHumor}, you\'re the friend people actually want around. Though {comedyRedFlag} is a bit concerning.',
-                'Listen—your {trait} as a {zodiac} could easily be annoying, but somehow you made it charming this year. Yes, you spend way too much time {tendency}, but the universe has decided to overlook it. Your "{song}" preference, the fact that {drinkJudgment}, and your comedy movie choice revealing {comedyJudgment}... it all somehow works.',
-                'The stars are honestly shocked a {zodiac} managed to land on nice with all that {trait} energy. Between {tendency}, {drinkTrait}, and being a {comedyHumor}, most people would have ended up on the naughty list. But you? You pulled it off, despite {comedyRedFlag}.'
+                'Your {trait} as {aOrAn} {zodiac} has been surprisingly wholesome this year. Sure, you\'re guilty of {tendency}, but the spirits have reviewed your browser history and... you\'re mostly okay. Your "{song}" choice screams "{songVibe}," you\'re {drinkTrait}, and as a {comedyHumor}, {comedyJudgment}. Somehow, this chaos adds up to nice.',
+                'The cosmic audit reveals that you, {aOrAn} {zodiac}, have been using your {trait} for good instead of chaos. Despite {tendency}, you managed not to ruin anyone\'s year. As "{songVibe}" who picked "{song}," combined with {drinkTrait} and being a {comedyHumor}, you\'re the friend people actually want around. Though {comedyRedFlag} is a bit concerning.',
+                'Listen—your {trait} as {aOrAn} {zodiac} could easily be annoying, but somehow you made it charming this year. Yes, you spend way too much time {tendency}, but the universe has decided to overlook it. Your "{song}" preference, the fact that {drinkJudgment}, and your comedy movie choice revealing {comedyJudgment}... it all somehow works.',
+                'The stars are honestly shocked {aOrAn} {zodiac} managed to land on nice with all that {trait} energy. Between {tendency}, {drinkTrait}, and being a {comedyHumor}, most people would have ended up on the naughty list. But you? You pulled it off, despite {comedyRedFlag}.'
             ],
 
             naughtyExplanations: [
-                'Your {trait} as a {zodiac} has been... a lot this year. The spirits have witnessed you {tendency} without an ounce of shame. Your "{song}" selection reveals you\'re "{songVibe}," {drinkTrait}, and as a {comedyHumor}, {comedyJudgment}. The universe is judging—especially since {comedyRedFlag}—but honestly, we\'re entertained.',
-                'As a {zodiac}, your {trait} crossed the line from "quirky" to "concerning" this year. Between {tendency}, {drinkTrait}, and being a {comedyHumor}, you\'ve given the cosmos plenty of material. Picking "{song}" and the fact that {comedyJudgment} just confirms you\'re self-aware enough to be dangerous.',
-                'The celestial beings need to have a word about your {trait} as a {zodiac}. You spent this year {tendency} like it was an Olympic sport while {drinkTrait}. Your "{song}" choice plus {comedyRedFlag} means {comedyJudgment}—and the naughty list has VIP seating with your name on it.',
+                'Your {trait} as {aOrAn} {zodiac} has been... a lot this year. The spirits have witnessed you {tendency} without an ounce of shame. Your "{song}" selection reveals you\'re "{songVibe}," {drinkTrait}, and as a {comedyHumor}, {comedyJudgment}. The universe is judging—especially since {comedyRedFlag}—but honestly, we\'re entertained.',
+                'As {aOrAn} {zodiac}, your {trait} crossed the line from "quirky" to "concerning" this year. Between {tendency}, {drinkTrait}, and being a {comedyHumor}, you\'ve given the cosmos plenty of material. Picking "{song}" and the fact that {comedyJudgment} just confirms you\'re self-aware enough to be dangerous.',
+                'The celestial beings need to have a word about your {trait} as {aOrAn} {zodiac}. You spent this year {tendency} like it was an Olympic sport while {drinkTrait}. Your "{song}" choice plus {comedyRedFlag} means {comedyJudgment}—and the naughty list has VIP seating with your name on it.',
                 'Your {zodiac} energy meant you were {trait} all year when you should have been behaving. The spirits caught you {tendency} constantly. Being a {comedyHumor} while {drinkTrait} isn\'t helping your case. Also, {comedyRedFlag} explains everything about you.'
             ],
 
@@ -705,12 +705,17 @@
             const songName = document.getElementById('song').options[document.getElementById('song').selectedIndex].text;
             const zodiacName = data.zodiac.charAt(0).toUpperCase() + data.zodiac.slice(1);
             
+            // Determine "a" or "an" based on whether zodiac starts with a vowel
+            const startsWithVowel = ['a', 'e', 'i', 'o', 'u'].includes(data.zodiac.charAt(0).toLowerCase());
+            const aOrAn = startsWithVowel ? 'an' : 'a';
+            
             // Generate explanation with template replacement
             const explanations = verdict === 'NICE' ? readingData.niceExplanations : readingData.naughtyExplanations;
             let explanation = explanations[seed % explanations.length];
             
             explanation = explanation
                 .replace('{trait}', zodiac.trait)
+                .replace('{aOrAn}', aOrAn)
                 .replace('{zodiac}', zodiacName)
                 .replace('{tendency}', zodiac.tendency)
                 .replace('{song}', songName)
